@@ -1,0 +1,6 @@
+{
+  "name": "Salim Music Player",
+  "description": "Native, offline Android music player with real-time audio effects, playlist management, synchronized lyrics, and responsive UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
