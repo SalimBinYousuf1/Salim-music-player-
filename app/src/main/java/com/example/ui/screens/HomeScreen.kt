@@ -34,13 +34,7 @@ fun HomeScreen(
     onNavigateToEqualizer: () -> Unit,
     onOpenSongMenu: (Song) -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateToVisualizer: (() -> Unit)? = null,
-    onNavigateToAlbums: (() -> Unit)? = null,
-    onNavigateToArtists: (() -> Unit)? = null,
-    onNavigateToGenres: (() -> Unit)? = null,
-    onNavigateToDrivingMode: (() -> Unit)? = null,
-    onNavigateToRecentlyPlayed: (() -> Unit)? = null,
-    onNavigateToMostPlayed: (() -> Unit)? = null
+    onNavigateToVisualizer: (() -> Unit)? = null
 ) {
     val songs by viewModel.rawSongs.collectAsState()
     val favorites by viewModel.favorites.collectAsState()
@@ -49,100 +43,55 @@ fun HomeScreen(
     val playlists by viewModel.playlists.collectAsState()
     val playerUiState by viewModel.playerUiState.collectAsState()
 
-    var showStatsDialog by remember { mutableStateOf(false) }
-
-    FluidGlassBackground(
-        isPlaying = playerUiState.isPlaying,
-        primaryColor = MaterialTheme.colorScheme.primary,
-        secondaryColor = MaterialTheme.colorScheme.secondary
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("home_screen"),
+        contentPadding = PaddingValues(bottom = 96.dp)
     ) {
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .testTag("home_screen"),
-            contentPadding = PaddingValues(bottom = 96.dp)
-        ) {
-            // Quick Navigation Pills Row
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+        // Quick Navigation Pills Row
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GlassPill(
+                    text = "Songs (${songs.size})",
+                    selected = false,
+                    icon = Icons.Default.MusicNote,
+                    onClick = onNavigateToSongs
+                )
+                GlassPill(
+                    text = "Playlists",
+                    selected = false,
+                    icon = Icons.Default.PlaylistPlay,
+                    onClick = onNavigateToPlaylists
+                )
+                GlassPill(
+                    text = "Favorites",
+                    selected = false,
+                    icon = Icons.Default.Favorite,
+                    onClick = onNavigateToFavorites
+                )
+                GlassPill(
+                    text = "Equalizer",
+                    selected = false,
+                    icon = Icons.Default.Tune,
+                    onClick = onNavigateToEqualizer
+                )
+                if (onNavigateToVisualizer != null) {
                     GlassPill(
-                        text = "Songs (${songs.size})",
-                        selected = false,
-                        icon = Icons.Default.MusicNote,
-                        onClick = onNavigateToSongs
+                        text = "Beat Visualizer",
+                        selected = true,
+                        icon = Icons.Default.GraphicEq,
+                        onClick = onNavigateToVisualizer
                     )
-                    if (onNavigateToAlbums != null) {
-                        GlassPill(
-                            text = "Albums",
-                            selected = false,
-                            icon = Icons.Default.Album,
-                            onClick = onNavigateToAlbums
-                        )
-                    }
-                    if (onNavigateToArtists != null) {
-                        GlassPill(
-                            text = "Artists",
-                            selected = false,
-                            icon = Icons.Default.Person,
-                            onClick = onNavigateToArtists
-                        )
-                    }
-                    if (onNavigateToGenres != null) {
-                        GlassPill(
-                            text = "Genres",
-                            selected = false,
-                            icon = Icons.Default.Category,
-                            onClick = onNavigateToGenres
-                        )
-                    }
-                    GlassPill(
-                        text = "Playlists",
-                        selected = false,
-                        icon = Icons.Default.PlaylistPlay,
-                        onClick = onNavigateToPlaylists
-                    )
-                    GlassPill(
-                        text = "Favorites",
-                        selected = false,
-                        icon = Icons.Default.Favorite,
-                        onClick = onNavigateToFavorites
-                    )
-                    if (onNavigateToDrivingMode != null) {
-                        GlassPill(
-                            text = "Drive Mode",
-                            selected = false,
-                            icon = Icons.Default.DirectionsCar,
-                            onClick = onNavigateToDrivingMode
-                        )
-                    }
-                    GlassPill(
-                        text = "Insights",
-                        selected = false,
-                        icon = Icons.Default.Insights,
-                        onClick = { showStatsDialog = true }
-                    )
-                    GlassPill(
-                        text = "Equalizer",
-                        selected = false,
-                        icon = Icons.Default.Tune,
-                        onClick = onNavigateToEqualizer
-                    )
-                    if (onNavigateToVisualizer != null) {
-                        GlassPill(
-                            text = "Beat Visualizer",
-                            selected = true,
-                            icon = Icons.Default.GraphicEq,
-                            onClick = onNavigateToVisualizer
-                        )
-                    }
                 }
             }
+        }
 
         // Quick Resume Hero Header
         item {
@@ -391,14 +340,6 @@ fun HomeScreen(
             }
         }
     }
-
-    if (showStatsDialog) {
-        MusicStatsDialog(
-            songs = songs,
-            onDismiss = { showStatsDialog = false }
-        )
-    }
-}
 }
 
 @Composable

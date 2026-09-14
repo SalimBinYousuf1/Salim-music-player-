@@ -37,10 +37,7 @@ enum class SalimTheme(val displayName: String) {
     FOREST_GREEN("Forest Green"),
     OCEAN_BLUE("Ocean Blue"),
     AURORA_GLASS("Aurora Glass"),
-    CYBER_NEON("Cyber Neon"),
-    ROSE_QUARTZ("Rose Quartz Glass"),
-    LIQUID_EMERALD("Liquid Emerald"),
-    SUNSET_HORIZON("Sunset Horizon")
+    CYBER_NEON("Cyber Neon")
 }
 
 enum class ThemeMode {

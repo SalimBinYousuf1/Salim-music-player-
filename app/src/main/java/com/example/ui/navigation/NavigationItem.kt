@@ -20,7 +20,6 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Lyrics : Screen("lyrics", "Lyrics", Icons.Default.Subtitles)
     object Equalizer : Screen("equalizer", "Equalizer", Icons.Default.Tune)
     object Visualizer : Screen("visualizer", "Visualizer", Icons.Default.GraphicEq)
-    object DrivingMode : Screen("driving_mode", "Drive Mode", Icons.Default.DirectionsCar)
     object Settings : Screen("settings", "Settings", Icons.Default.Settings)
     object About : Screen("about", "About", Icons.Default.Info)
 
@@ -59,7 +58,6 @@ val DrawerScreens = listOf(
     Screen.Lyrics,
     Screen.Equalizer,
     Screen.Visualizer,
-    Screen.DrivingMode,
     Screen.Settings,
     Screen.About
 )

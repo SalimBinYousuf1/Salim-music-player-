@@ -153,54 +153,6 @@ private fun createCyberNeonScheme() = darkColorScheme(
     outline = Color(0xFF3D3268)
 )
 
-private fun createRoseQuartzScheme() = darkColorScheme(
-    primary = Color(0xFFFB7185),
-    onPrimary = Color.Black,
-    primaryContainer = Color(0xFF4C0519),
-    onPrimaryContainer = Color(0xFFFFE4E6),
-    secondary = Color(0xFFF472B6),
-    onSecondary = Color.Black,
-    background = Color(0xFF12070A),
-    onBackground = Color(0xFFFFF1F2),
-    surface = Color(0xFF1F0D13),
-    onSurface = Color(0xFFFFF1F2),
-    surfaceVariant = Color(0xFF3B121F),
-    onSurfaceVariant = Color(0xFFFDA4AF),
-    outline = Color(0xFF881337)
-)
-
-private fun createLiquidEmeraldScheme() = darkColorScheme(
-    primary = Color(0xFF10B981),
-    onPrimary = Color.Black,
-    primaryContainer = Color(0xFF022C22),
-    onPrimaryContainer = Color(0xFFD1FAE5),
-    secondary = Color(0xFF34D399),
-    onSecondary = Color.Black,
-    background = Color(0xFF02120C),
-    onBackground = Color(0xFFECFDF5),
-    surface = Color(0xFF062319),
-    onSurface = Color(0xFFECFDF5),
-    surfaceVariant = Color(0xFF0A3B2B),
-    onSurfaceVariant = Color(0xFF6EE7B7),
-    outline = Color(0xFF047857)
-)
-
-private fun createSunsetHorizonScheme() = darkColorScheme(
-    primary = Color(0xFFFF7A00),
-    onPrimary = Color.Black,
-    primaryContainer = Color(0xFF4A1800),
-    onPrimaryContainer = Color(0xFFFFEDD5),
-    secondary = Color(0xFFF59E0B),
-    onSecondary = Color.Black,
-    background = Color(0xFF130904),
-    onBackground = Color(0xFFFFF7ED),
-    surface = Color(0xFF221107),
-    onSurface = Color(0xFFFFF7ED),
-    surfaceVariant = Color(0xFF381C0D),
-    onSurfaceVariant = Color(0xFFFDBA74),
-    outline = Color(0xFF9A3412)
-)
-
 @Composable
 fun SalimMusicPlayerTheme(
     theme: SalimTheme = SalimTheme.DARK_SLATE,
@@ -232,9 +184,6 @@ fun SalimMusicPlayerTheme(
             SalimTheme.OCEAN_BLUE -> createOceanBlueScheme()
             SalimTheme.AURORA_GLASS -> createAuroraGlassScheme()
             SalimTheme.CYBER_NEON -> createCyberNeonScheme()
-            SalimTheme.ROSE_QUARTZ -> createRoseQuartzScheme()
-            SalimTheme.LIQUID_EMERALD -> createLiquidEmeraldScheme()
-            SalimTheme.SUNSET_HORIZON -> createSunsetHorizonScheme()
         }
     }
 

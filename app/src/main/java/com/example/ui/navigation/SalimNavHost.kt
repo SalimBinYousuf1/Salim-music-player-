@@ -128,79 +128,14 @@ fun SalimNavHost(
                         viewModel = viewModel,
                         onNavigateToSongs = { navController.navigate(Screen.Songs.route) },
                         onNavigateToPlaylists = { navController.navigate(Screen.Playlists.route) },
-                        onNavigateToFavorites = { navController.navigate(Screen.Favorites.route) },
+                        onNavigateToFavorites = {
+                            viewModel.setSortOption(com.example.domain.model.SortOption.FAVORITES_FIRST)
+                            navController.navigate(Screen.Songs.route)
+                        },
                         onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) },
                         onNavigateToEqualizer = { navController.navigate(Screen.Equalizer.route) },
                         onOpenSongMenu = { song -> playlistPickerForSong = song },
-                        onNavigateToVisualizer = { navController.navigate(Screen.Visualizer.route) },
-                        onNavigateToAlbums = { navController.navigate(Screen.Albums.route) },
-                        onNavigateToArtists = { navController.navigate(Screen.Artists.route) },
-                        onNavigateToGenres = { navController.navigate(Screen.Genres.route) },
-                        onNavigateToDrivingMode = { navController.navigate(Screen.DrivingMode.route) },
-                        onNavigateToRecentlyPlayed = { navController.navigate(Screen.RecentlyPlayed.route) },
-                        onNavigateToMostPlayed = { navController.navigate(Screen.MostPlayed.route) }
-                    )
-                }
-
-                // Albums
-                composable(Screen.Albums.route) {
-                    AlbumsScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Artists
-                composable(Screen.Artists.route) {
-                    ArtistsScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Genres
-                composable(Screen.Genres.route) {
-                    GenresScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Favorites
-                composable(Screen.Favorites.route) {
-                    FavoritesScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Recently Played
-                composable(Screen.RecentlyPlayed.route) {
-                    RecentlyPlayedScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Most Played
-                composable(Screen.MostPlayed.route) {
-                    MostPlayedScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { navController.popBackStack() },
-                        onNavigateToNowPlaying = { navController.navigate(Screen.NowPlaying.route) }
-                    )
-                }
-
-                // Driving Mode
-                composable(Screen.DrivingMode.route) {
-                    DrivingModeScreen(
-                        viewModel = viewModel,
-                        onExitDrivingMode = { navController.popBackStack() }
+                        onNavigateToVisualizer = { navController.navigate(Screen.Visualizer.route) }
                     )
                 }
 

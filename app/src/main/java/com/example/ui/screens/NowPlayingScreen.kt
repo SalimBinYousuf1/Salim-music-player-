@@ -57,8 +57,6 @@ fun NowPlayingScreen(
     var showSpeedDialog by remember { mutableStateOf(false) }
     var showSleepTimerDialog by remember { mutableStateOf(false) }
     var showQuickBassDialog by remember { mutableStateOf(false) }
-    var showAudioSpecsDialog by remember { mutableStateOf(false) }
-    var useWaveformScrubber by remember { mutableStateOf(false) }
 
     var userDraggingSlider by remember { mutableStateOf(false) }
     var sliderTempPosition by remember { mutableFloatStateOf(0f) }
@@ -128,14 +126,6 @@ fun NowPlayingScreen(
                 },
                 actions = {
                     GlassIconButton(
-                        onClick = { showAudioSpecsDialog = true },
-                        icon = Icons.Default.Info,
-                        contentDescription = "Technical Specs",
-                        size = 44.dp,
-                        iconSize = 22.dp,
-                        modifier = Modifier.padding(end = 4.dp).testTag("now_playing_specs_button")
-                    )
-                    GlassIconButton(
                         onClick = { showQuickBassDialog = true },
                         icon = Icons.Default.GraphicEq,
                         contentDescription = "Quick Audio Boost",
@@ -171,10 +161,18 @@ fun NowPlayingScreen(
         },
         modifier = modifier.fillMaxSize().testTag("now_playing_screen")
     ) { paddingValues ->
-        FluidGlassBackground(
-            isPlaying = playerUiState.isPlaying,
-            primaryColor = MaterialTheme.colorScheme.primary,
-            secondaryColor = MaterialTheme.colorScheme.secondary
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f)
+                        )
+                    )
+                )
         ) {
             Column(
                 modifier = Modifier
@@ -371,56 +369,28 @@ fun NowPlayingScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                // Smooth Progress Slider or Liquid Waveform Scrubber
+                // Smooth Progress Slider & Durations
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 6.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        GlassPill(
-                            text = if (useWaveformScrubber) "Waveform" else "Standard",
-                            selected = useWaveformScrubber,
-                            icon = if (useWaveformScrubber) Icons.Default.GraphicEq else Icons.Default.LinearScale,
-                            onClick = { useWaveformScrubber = !useWaveformScrubber },
-                            modifier = Modifier.testTag("waveform_toggle_pill")
+                    Slider(
+                        value = displayPosition.toFloat(),
+                        onValueChange = {
+                            userDraggingSlider = true
+                            sliderTempPosition = it
+                        },
+                        onValueChangeFinished = {
+                            userDraggingSlider = false
+                            viewModel.seekTo(sliderTempPosition.toLong())
+                        },
+                        valueRange = 0f..duration.toFloat(),
+                        modifier = Modifier.fillMaxWidth().testTag("now_playing_slider"),
+                        colors = SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                         )
-                    }
-
-                    if (useWaveformScrubber) {
-                        LiquidWaveformScrubber(
-                            currentPosition = displayPosition,
-                            duration = duration,
-                            waveform = waveform,
-                            onSeek = { viewModel.seekTo(it) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(64.dp)
-                        )
-                    } else {
-                        Slider(
-                            value = displayPosition.toFloat(),
-                            onValueChange = {
-                                userDraggingSlider = true
-                                sliderTempPosition = it
-                            },
-                            onValueChangeFinished = {
-                                userDraggingSlider = false
-                                viewModel.seekTo(sliderTempPosition.toLong())
-                            },
-                            valueRange = 0f..duration.toFloat(),
-                            modifier = Modifier.fillMaxWidth().testTag("now_playing_slider"),
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.primary,
-                                activeTrackColor = MaterialTheme.colorScheme.primary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                            )
-                        )
-                    }
+                    )
 
                     Row(
                         modifier = Modifier
@@ -755,19 +725,6 @@ fun NowPlayingScreen(
                             }) { Text("Turn Off") }
                         }
                     } else {
-                        val remainingSongSeconds = ((duration - displayPosition) / 1000).toInt().coerceAtLeast(1)
-                        TextButton(
-                            onClick = {
-                                viewModel.startSleepTimer(remainingSongSeconds / 60 + 1)
-                                showSleepTimerDialog = false
-                            },
-                            modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 48.dp)
-                        ) {
-                            Text("End of current song (~${remainingSongSeconds / 60}m)", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
-
                         val minutesList = listOf(5, 15, 30, 45, 60, 90)
                         minutesList.forEach { mins ->
                             TextButton(
@@ -786,14 +743,6 @@ fun NowPlayingScreen(
             confirmButton = {
                 TextButton(onClick = { showSleepTimerDialog = false }) { Text("Close") }
             }
-        )
-    }
-
-    // Audio Technical Specs Dialog
-    if (showAudioSpecsDialog) {
-        AudioSpecsDialog(
-            song = currentSong,
-            onDismiss = { showAudioSpecsDialog = false }
         )
     }
 }

@@ -35,14 +35,6 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
     val sortOption: StateFlow<SortOption> = preferences.sortOption
         .stateIn(viewModelScope, SharingStarted.Eagerly, SortOption.TITLE_AZ)
-    val gaplessPlayback: StateFlow<Boolean> = preferences.gaplessPlayback
-        .stateIn(viewModelScope, SharingStarted.Eagerly, true)
-    val autoScrollLyrics: StateFlow<Boolean> = preferences.autoScrollLyrics
-        .stateIn(viewModelScope, SharingStarted.Eagerly, true)
-    val keepScreenAwake: StateFlow<Boolean> = preferences.keepScreenAwake
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-    val lyricsTextSize: StateFlow<Float> = preferences.lyricsTextSize
-        .stateIn(viewModelScope, SharingStarted.Eagerly, 18f)
 
     // Player State
     val playerUiState: StateFlow<PlayerUiState> = playbackManager.uiState
@@ -408,10 +400,6 @@ class MusicPlayerViewModel(application: Application) : AndroidViewModel(applicat
     fun setCompactMode(enabled: Boolean) = viewModelScope.launch { preferences.setCompactMode(enabled) }
     fun setReducedMotion(enabled: Boolean) = viewModelScope.launch { preferences.setReducedMotion(enabled) }
     fun setSortOption(sort: SortOption) = viewModelScope.launch { preferences.setSortOption(sort) }
-    fun setGaplessPlayback(enabled: Boolean) = viewModelScope.launch { preferences.setGaplessPlayback(enabled) }
-    fun setAutoScrollLyrics(enabled: Boolean) = viewModelScope.launch { preferences.setAutoScrollLyrics(enabled) }
-    fun setKeepScreenAwake(enabled: Boolean) = viewModelScope.launch { preferences.setKeepScreenAwake(enabled) }
-    fun setLyricsTextSize(size: Float) = viewModelScope.launch { preferences.setLyricsTextSize(size) }
     fun setFilterGenre(genre: String?) { selectedGenreFilter.value = genre }
     fun resetSettings() = viewModelScope.launch { preferences.resetAllSettings() }
 
